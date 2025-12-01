@@ -2,16 +2,25 @@ workflows:
   android-workflow:
     name: Build Android APK
     max_build_duration: 60
+
     environment:
+      groups:
+        - android_credentials
       java: 17
-      gradle: wrapper
+
     scripts:
+      - name: Make Gradle executable
+        script: chmod +x ./gradlew
+
       - name: Clean project
         script: ./gradlew clean
-      - name: Build APK
+
+      - name: Build release APK
         script: ./gradlew assembleRelease
+
     artifacts:
       - app/build/outputs/**/*.apk
+
     publishing:
       email:
         recipients:
